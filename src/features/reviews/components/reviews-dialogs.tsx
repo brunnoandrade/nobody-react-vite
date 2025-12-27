@@ -6,6 +6,13 @@ import { useReviews } from './reviews-provider'
 export function ReviewsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useReviews()
 
+  const closeAndReset = () => {
+    setOpen(null)
+    setTimeout(() => {
+      setCurrentRow(null)
+    }, 500)
+  }
+
   return (
     <>
       {currentRow && (
@@ -33,10 +40,7 @@ export function ReviewsDialogs() {
             }, 500)
           }}
           handleConfirm={() => {
-            setOpen(null)
-            setTimeout(() => {
-              setCurrentRow(null)
-            }, 500)
+            closeAndReset()
             showSubmittedData(currentRow, 'Avaliação aprovada:')
           }}
           title='Aprovar avaliação?'
@@ -54,6 +58,36 @@ export function ReviewsDialogs() {
 
       {currentRow && (
         <ConfirmDialog
+          key={`review-visibility-author-${currentRow.id}`}
+          open={open === 'visibility-author'}
+          onOpenChange={() => {
+            setOpen('visibility-author')
+            setTimeout(() => {
+              setCurrentRow(null)
+            }, 500)
+          }}
+          handleConfirm={() => {
+            closeAndReset()
+            showSubmittedData(currentRow, 'Visibilidade do autor atualizada:')
+          }}
+          title='Exibir nome do autor?'
+          desc={
+            <>
+              Você pode escolher se o <strong>nome do autor</strong> desta
+              avaliação será exibido publicamente.
+              <br />
+              <br />
+              Caso desative, a avaliação continuará visível, porém de forma
+              <strong> anônima</strong>.
+            </>
+          }
+          confirmText='Confirmar'
+          className='max-w-md'
+        />
+      )}
+
+      {currentRow && (
+        <ConfirmDialog
           key={`review-reject-${currentRow.id}`}
           destructive
           open={open === 'reject'}
@@ -64,10 +98,7 @@ export function ReviewsDialogs() {
             }, 500)
           }}
           handleConfirm={() => {
-            setOpen(null)
-            setTimeout(() => {
-              setCurrentRow(null)
-            }, 500)
+            closeAndReset()
             showSubmittedData(currentRow, 'Avaliação rejeitada:')
           }}
           title='Rejeitar avaliação?'
@@ -96,10 +127,7 @@ export function ReviewsDialogs() {
             }, 500)
           }}
           handleConfirm={() => {
-            setOpen(null)
-            setTimeout(() => {
-              setCurrentRow(null)
-            }, 500)
+            closeAndReset()
             showSubmittedData(currentRow, 'Avaliação excluída:')
           }}
           title='Excluir avaliação?'

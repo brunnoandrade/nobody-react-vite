@@ -53,9 +53,25 @@ export const reviewsColumns: ColumnDef<Review>[] = [
       className: 'ps-1 max-w-[180px]',
       tdClassName: 'ps-4',
     },
-    cell: ({ row }) => (
-      <span className='truncate text-sm'>{row.getValue('author')}</span>
-    ),
+    cell: ({ row }) => {
+      const author = row.getValue<string>('author')
+      const showAuthor = row.original.showAuthor ?? true
+
+      if (!showAuthor) {
+        return (
+          <div className='flex items-center gap-2'>
+            <span className='text-sm text-muted-foreground italic'>
+              Anônimo
+            </span>
+            <Badge variant='outline' className='text-xs'>
+              oculto
+            </Badge>
+          </div>
+        )
+      }
+
+      return <span className='truncate text-sm'>{author}</span>
+    },
   },
   {
     accessorKey: 'comment',

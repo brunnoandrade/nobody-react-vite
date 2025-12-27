@@ -6,6 +6,7 @@ export const reviewSchema = z.object({
   rating: z.number().min(1).max(5),
   comment: z.string(),
   author: z.string(),
+  showAuthor: z.boolean(),
   status: z.enum(['pending', 'approved', 'rejected']),
   createdAt: z.date(),
 })

@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { Trash2, CheckCircle, XCircle, Eye } from 'lucide-react'
+import { Trash2, CheckCircle, XCircle, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -24,6 +24,8 @@ export function DataTableRowActions<TData>({
 
   const { setOpen, setCurrentRow } = useReviews()
 
+  const isAuthorVisible = review.showAuthor ?? true
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -36,7 +38,7 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align='end' className='w-[180px]'>
+      <DropdownMenuContent align='end' className='w-[200px]'>
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(review)
@@ -74,6 +76,20 @@ export function DataTableRowActions<TData>({
           Rejeitar
           <DropdownMenuShortcut>
             <XCircle size={16} />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          onClick={() => {
+            setCurrentRow(review)
+            setOpen('toggle-author')
+          }}
+        >
+          {isAuthorVisible ? 'Ocultar autor' : 'Mostrar autor'}
+          <DropdownMenuShortcut>
+            {isAuthorVisible ? <EyeOff size={16} /> : <Eye size={16} />}
           </DropdownMenuShortcut>
         </DropdownMenuItem>
 

@@ -19,6 +19,7 @@ export const reviews = Array.from({ length: 100 }, () => {
     rating: faker.number.int({ min: 1, max: 5 }),
     comment: faker.lorem.text(),
     author: faker.person.fullName(),
+    showAuthor: faker.datatype.boolean(),
     status: faker.helpers.arrayElement(statuses),
     createdAt: faker.date.recent({ days: 30 }),
   }
