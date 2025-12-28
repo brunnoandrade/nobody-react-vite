@@ -99,7 +99,8 @@ export const reviewsColumns: ColumnDef<Review>[] = [
       return <Badge variant='outline'>⭐ {rating}</Badge>
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+      const rating = String(row.getValue<number>(id))
+      return value.includes(rating)
     },
   },
   {

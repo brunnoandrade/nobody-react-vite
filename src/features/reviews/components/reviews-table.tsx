@@ -127,11 +127,11 @@ export function ReviewsTable({ data }: DataTableProps) {
             columnId: 'rating',
             title: 'Nota',
             options: [
-              { label: '1 estrela', value: 1 },
-              { label: '2 estrelas', value: 2 },
-              { label: '3 estrelas', value: 3 },
-              { label: '4 estrelas', value: 4 },
-              { label: '5 estrelas', value: 5 },
+              { label: '1 estrela', value: '1' },
+              { label: '2 estrelas', value: '2' },
+              { label: '3 estrelas', value: '3' },
+              { label: '4 estrelas', value: '4' },
+              { label: '5 estrelas', value: '5' },
             ],
           },
         ]}

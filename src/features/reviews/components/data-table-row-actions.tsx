@@ -84,7 +84,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(review)
-            setOpen('toggle-author')
+            setOpen('visibility-author')
           }}
         >
           {isAuthorVisible ? 'Ocultar autor' : 'Mostrar autor'}
