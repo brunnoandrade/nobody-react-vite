@@ -11,6 +11,7 @@ type ReviewsDialogType =
   | 'export'
   | 'filter'
   | 'visibility-author'
+  | 'reply'
 
 type ReviewsContextType = {
   open: ReviewsDialogType | null

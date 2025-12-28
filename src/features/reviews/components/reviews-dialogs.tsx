@@ -1,4 +1,7 @@
+import { useState } from 'react'
 import { showSubmittedData } from '@/lib/show-submitted-data'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { ReviewsDetailsDrawer } from './reviews-mutate-drawer'
 import { useReviews } from './reviews-provider'
@@ -6,10 +9,13 @@ import { useReviews } from './reviews-provider'
 export function ReviewsDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useReviews()
 
+  const [reply, setReply] = useState('')
+
   const closeAndReset = () => {
     setOpen(null)
     setTimeout(() => {
       setCurrentRow(null)
+      setReply('')
     }, 500)
   }
 
@@ -54,6 +60,50 @@ export function ReviewsDialogs() {
           confirmText='Aprovar'
           className='max-w-md'
         />
+      )}
+
+      {currentRow && (
+        <ConfirmDialog
+          key={`review-reply-${currentRow.id}`}
+          open={open === 'reply'}
+          onOpenChange={() => {
+            setOpen('reply')
+            setTimeout(() => {
+              setCurrentRow(null)
+            }, 500)
+          }}
+          handleConfirm={() => {
+            closeAndReset()
+            showSubmittedData(
+              {
+                reviewId: currentRow.id,
+                reply,
+              },
+              'Resposta enviada:'
+            )
+          }}
+          title='Responder avaliação'
+          desc={
+            <>
+              Sua resposta será exibida publicamente junto à avaliação.
+              <br />
+              Seja claro e profissional.
+            </>
+          }
+          confirmText='Enviar resposta'
+          className='max-w-md'
+        >
+          <div className='space-y-2'>
+            <Label htmlFor='reply'>Resposta</Label>
+            <Textarea
+              id='reply'
+              placeholder='Digite sua resposta...'
+              value={reply}
+              onChange={(e) => setReply(e.target.value)}
+              className='min-h-[100px]'
+            />
+          </div>
+        </ConfirmDialog>
       )}
 
       {currentRow && (

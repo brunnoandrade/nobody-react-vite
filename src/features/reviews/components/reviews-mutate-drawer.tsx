@@ -38,7 +38,7 @@ export function ReviewsDetailsDrawer({
           </SheetDescription>
         </SheetHeader>
 
-        <div className='flex-1 space-y-4 overflow-y-auto px-1 py-4'>
+        <div className='flex-1 space-y-4 overflow-y-auto px-4 py-4'>
           <div>
             <span className='text-sm text-muted-foreground'>Produto</span>
             <p className='font-medium'>{review.product}</p>

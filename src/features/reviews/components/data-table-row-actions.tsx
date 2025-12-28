@@ -1,6 +1,13 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { Trash2, CheckCircle, XCircle, Eye, EyeOff } from 'lucide-react'
+import {
+  Trash2,
+  CheckCircle,
+  XCircle,
+  Eye,
+  EyeOff,
+  MessageSquare,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -25,6 +32,7 @@ export function DataTableRowActions<TData>({
   const { setOpen, setCurrentRow } = useReviews()
 
   const isAuthorVisible = review.showAuthor ?? true
+  const canReply = review.status !== 'rejected'
 
   return (
     <DropdownMenu modal={false}>
@@ -38,7 +46,7 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align='end' className='w-[200px]'>
+      <DropdownMenuContent align='end' className='w-[220px]'>
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(review)
@@ -76,6 +84,21 @@ export function DataTableRowActions<TData>({
           Rejeitar
           <DropdownMenuShortcut>
             <XCircle size={16} />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          disabled={!canReply}
+          onClick={() => {
+            setCurrentRow(review)
+            setOpen('reply')
+          }}
+        >
+          Responder avaliação
+          <DropdownMenuShortcut>
+            <MessageSquare size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
 
