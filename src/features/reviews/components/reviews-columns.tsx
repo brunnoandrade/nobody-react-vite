@@ -45,6 +45,21 @@ export const reviewsColumns: ColumnDef<Review>[] = [
     ),
   },
   {
+    accessorKey: 'comment',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Comentário' />
+    ),
+    meta: {
+      className: 'ps-1 max-w-[420px]',
+      tdClassName: 'ps-4',
+    },
+    cell: ({ row }) => (
+      <span className='line-clamp-2 max-w-[620px] text-muted-foreground'>
+        {row.getValue('comment')}
+      </span>
+    ),
+  },
+  {
     accessorKey: 'author',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Autor' />
@@ -72,21 +87,6 @@ export const reviewsColumns: ColumnDef<Review>[] = [
 
       return <span className='truncate text-sm'>{author}</span>
     },
-  },
-  {
-    accessorKey: 'comment',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Comentário' />
-    ),
-    meta: {
-      className: 'ps-1 max-w-0 w-full',
-      tdClassName: 'ps-4',
-    },
-    cell: ({ row }) => (
-      <span className='line-clamp-2 max-w-[620px] text-muted-foreground'>
-        {row.getValue('comment')}
-      </span>
-    ),
   },
   {
     accessorKey: 'rating',

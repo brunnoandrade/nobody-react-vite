@@ -35,14 +35,12 @@ type DataTableProps = {
 }
 
 export function ReviewsTable({ data }: DataTableProps) {
-  // UI-only local states
   const [rowSelection, setRowSelection] = useState({})
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'createdAt', desc: true },
   ])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
-  // URL synced table state
   const {
     globalFilter,
     onGlobalFilterChange,
