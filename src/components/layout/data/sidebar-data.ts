@@ -1,12 +1,7 @@
 import {
   LayoutDashboard,
-  Monitor,
   HelpCircle,
-  Bell,
-  Palette,
   Settings,
-  Wrench,
-  UserCog,
   Users,
   AudioWaveform,
   Command,
@@ -63,38 +58,12 @@ export const sidebarData: SidebarData = {
       title: 'Outros',
       items: [
         {
-          title: 'Settings',
+          title: 'Configurações',
+          url: '/settings',
           icon: Settings,
-          items: [
-            {
-              title: 'Profile',
-              url: '/settings',
-              icon: UserCog,
-            },
-            {
-              title: 'Account',
-              url: '/settings/account',
-              icon: Wrench,
-            },
-            {
-              title: 'Appearance',
-              url: '/settings/appearance',
-              icon: Palette,
-            },
-            {
-              title: 'Notifications',
-              url: '/settings/notifications',
-              icon: Bell,
-            },
-            {
-              title: 'Display',
-              url: '/settings/display',
-              icon: Monitor,
-            },
-          ],
         },
         {
-          title: 'Help Center',
+          title: 'Centro de Ajuda',
           url: '/help-center',
           icon: HelpCircle,
         },

@@ -30,7 +30,7 @@ export function AppearanceForm() {
   const { font, setFont } = useFont()
   const { theme, setTheme } = useTheme()
 
-  // This can come from your database or API.
+  // Pode vir do banco de dados ou API
   const defaultValues: Partial<AppearanceFormValues> = {
     theme: theme as 'light' | 'dark',
     font,
@@ -42,8 +42,8 @@ export function AppearanceForm() {
   })
 
   function onSubmit(data: AppearanceFormValues) {
-    if (data.font != font) setFont(data.font)
-    if (data.theme != theme) setTheme(data.theme)
+    if (data.font !== font) setFont(data.font)
+    if (data.theme !== theme) setTheme(data.theme)
 
     showSubmittedData(data)
   }
@@ -56,7 +56,7 @@ export function AppearanceForm() {
           name='font'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Font</FormLabel>
+              <FormLabel>Fonte</FormLabel>
               <div className='relative w-max'>
                 <FormControl>
                   <select
@@ -77,22 +77,22 @@ export function AppearanceForm() {
                 <ChevronDownIcon className='absolute end-3 top-2.5 h-4 w-4 opacity-50' />
               </div>
               <FormDescription className='font-manrope'>
-                Set the font you want to use in the dashboard.
+                Defina a fonte que será utilizada no painel.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name='theme'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Theme</FormLabel>
-              <FormDescription>
-                Select the theme for the dashboard.
-              </FormDescription>
+              <FormLabel>Tema</FormLabel>
+              <FormDescription>Selecione o tema do painel.</FormDescription>
               <FormMessage />
+
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
@@ -120,10 +120,11 @@ export function AppearanceForm() {
                       </div>
                     </div>
                     <span className='block w-full p-2 text-center font-normal'>
-                      Light
+                      Claro
                     </span>
                   </FormLabel>
                 </FormItem>
+
                 <FormItem>
                   <FormLabel className='[&:has([data-state=checked])>div]:border-primary'>
                     <FormControl>
@@ -137,16 +138,16 @@ export function AppearanceForm() {
                         </div>
                         <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-xs'>
                           <div className='h-4 w-4 rounded-full bg-slate-400' />
-                          <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
+                          <div className='bg-slate-400] h-2 w-[100px] rounded-lg' />
                         </div>
                         <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-xs'>
                           <div className='h-4 w-4 rounded-full bg-slate-400' />
-                          <div className='h-2 w-[100px] rounded-lg bg-slate-400' />
+                          <div className='bg-slate-400] h-2 w-[100px] rounded-lg' />
                         </div>
                       </div>
                     </div>
                     <span className='block w-full p-2 text-center font-normal'>
-                      Dark
+                      Escuro
                     </span>
                   </FormLabel>
                 </FormItem>
@@ -155,7 +156,7 @@ export function AppearanceForm() {
           )}
         />
 
-        <Button type='submit'>Update preferences</Button>
+        <Button type='submit'>Atualizar preferências</Button>
       </form>
     </Form>
   )
