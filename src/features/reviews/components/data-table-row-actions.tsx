@@ -1,13 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import {
-  Trash2,
-  CheckCircle,
-  XCircle,
-  Eye,
-  EyeOff,
-  MessageSquare,
-} from 'lucide-react'
+import { Trash2, CheckCircle, XCircle, Eye, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -31,7 +24,7 @@ export function DataTableRowActions<TData>({
 
   const { setOpen, setCurrentRow } = useReviews()
 
-  const isAuthorVisible = review.showAuthor ?? true
+  // const isAuthorVisible = review.showAuthor ?? true
   const canReply = review.status !== 'rejected'
 
   return (
@@ -99,20 +92,6 @@ export function DataTableRowActions<TData>({
           Responder avaliação
           <DropdownMenuShortcut>
             <MessageSquare size={16} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator />
-
-        <DropdownMenuItem
-          onClick={() => {
-            setCurrentRow(review)
-            setOpen('visibility-author')
-          }}
-        >
-          {isAuthorVisible ? 'Ocultar autor' : 'Mostrar autor'}
-          <DropdownMenuShortcut>
-            {isAuthorVisible ? <EyeOff size={16} /> : <Eye size={16} />}
           </DropdownMenuShortcut>
         </DropdownMenuItem>
 
