@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Cross2Icon } from '@radix-ui/react-icons'
 import { type Table } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
@@ -26,8 +27,15 @@ export function DataTableToolbar<TData>({
   searchKey,
   filters = [],
 }: DataTableToolbarProps<TData>) {
+  const tableFilter = table.getState().globalFilter ?? ''
+  const [searchValue, setSearchValue] = useState(String(tableFilter))
+
   const isFiltered =
     table.getState().columnFilters.length > 0 || table.getState().globalFilter
+
+  useEffect(() => {
+    setSearchValue(String(tableFilter))
+  }, [tableFilter])
 
   return (
     <div className='flex items-center justify-between'>
@@ -35,19 +43,23 @@ export function DataTableToolbar<TData>({
         {searchKey ? (
           <Input
             placeholder={searchPlaceholder}
-            value={
-              (table.getColumn(searchKey)?.getFilterValue() as string) ?? ''
-            }
-            onChange={(event) =>
-              table.getColumn(searchKey)?.setFilterValue(event.target.value)
-            }
+            value={searchValue}
+            onChange={(event) => {
+              const value = event.target.value
+              setSearchValue(value)
+              table.getColumn(searchKey)?.setFilterValue(value)
+            }}
             className='h-8 w-[150px] lg:w-[250px]'
           />
         ) : (
           <Input
             placeholder={searchPlaceholder}
-            value={table.getState().globalFilter ?? ''}
-            onChange={(event) => table.setGlobalFilter(event.target.value)}
+            value={searchValue}
+            onChange={(event) => {
+              const value = event.target.value
+              setSearchValue(value)
+              table.setGlobalFilter(value)
+            }}
             className='h-8 w-[150px] lg:w-[250px]'
           />
         )}
@@ -71,6 +83,7 @@ export function DataTableToolbar<TData>({
             onClick={() => {
               table.resetColumnFilters()
               table.setGlobalFilter('')
+              setSearchValue('')
             }}
             className='h-8 px-2 lg:px-3'
           >

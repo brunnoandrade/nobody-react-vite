@@ -58,6 +58,19 @@ export const reviewsColumns: ColumnDef<Review>[] = [
         {row.getValue('comment')}
       </span>
     ),
+    filterFn: (row, _id, filterValue) => {
+      if (!filterValue) return true
+
+      const comment = String(row.getValue('comment')).toLowerCase()
+
+      const keywords = String(filterValue)
+        .toLowerCase()
+        .split(' ')
+        .map((k) => k.trim())
+        .filter(Boolean)
+
+      return keywords.every((keyword) => comment.includes(keyword))
+    },
   },
   {
     accessorKey: 'author',

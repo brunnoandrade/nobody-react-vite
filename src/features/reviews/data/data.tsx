@@ -1,5 +1,12 @@
 import { Clock, CheckCircle, XCircle, Star, Package } from 'lucide-react'
 
+export const reviewProducts = [
+  { label: 'Tênis Runner Pro', value: 'Tênis Runner Pro' },
+  { label: 'Camiseta Dry Fit', value: 'Camiseta Dry Fit' },
+  { label: 'Jaqueta Impermeável', value: 'Jaqueta Impermeável' },
+  { label: 'Mochila Explorer', value: 'Mochila Explorer' },
+]
+
 export const products = [
   {
     value: 'tenis-runner-pro',

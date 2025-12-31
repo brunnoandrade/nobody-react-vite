@@ -23,7 +23,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { reviewStatuses } from '../data/data'
+import { reviewProducts, reviewStatuses } from '../data/data'
 import { type Review } from '../data/schema'
 import { DataTableBulkActions } from './data-table-bulk-actions'
 import { reviewsColumns as columns } from './reviews-columns'
@@ -42,8 +42,6 @@ export function ReviewsTable({ data }: DataTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
   const {
-    globalFilter,
-    onGlobalFilterChange,
     columnFilters,
     onColumnFiltersChange,
     pagination,
@@ -53,8 +51,8 @@ export function ReviewsTable({ data }: DataTableProps) {
     search: route.useSearch(),
     navigate: route.useNavigate(),
     pagination: { defaultPage: 1, defaultPageSize: 10 },
-    globalFilter: { enabled: true, key: 'filter' },
     columnFilters: [
+      { columnId: 'comment', searchKey: 'comment', type: 'string' },
       { columnId: 'status', searchKey: 'status', type: 'array' },
       { columnId: 'rating', searchKey: 'rating', type: 'array' },
     ],
@@ -69,7 +67,6 @@ export function ReviewsTable({ data }: DataTableProps) {
       columnVisibility,
       rowSelection,
       columnFilters,
-      globalFilter,
       pagination,
     },
     enableRowSelection: true,
@@ -77,20 +74,7 @@ export function ReviewsTable({ data }: DataTableProps) {
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange,
-    onGlobalFilterChange,
     onColumnFiltersChange,
-    globalFilterFn: (row, _columnId, filterValue) => {
-      const product = String(row.getValue('product')).toLowerCase()
-      const comment = String(row.getValue('comment')).toLowerCase()
-      const author = String(row.original.author).toLowerCase()
-      const searchValue = String(filterValue).toLowerCase()
-
-      return (
-        product.includes(searchValue) ||
-        comment.includes(searchValue) ||
-        author.includes(searchValue)
-      )
-    },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -114,8 +98,13 @@ export function ReviewsTable({ data }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Buscar por produto...'
+        searchPlaceholder='Buscar...'
         filters={[
+          {
+            columnId: 'product',
+            title: 'Produto',
+            options: reviewProducts,
+          },
           {
             columnId: 'status',
             title: 'Status',
