@@ -13,6 +13,7 @@ export type ProductsDialogType =
   | 'export'
   | 'filter'
   | 'toggle-active'
+  | 'reviews'
 
 type ProductsContextType = {
   open: ProductsDialogType | null

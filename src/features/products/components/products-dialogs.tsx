@@ -1,5 +1,7 @@
 import { showSubmittedData } from '@/lib/show-submitted-data'
 import { ConfirmDialog } from '@/components/confirm-dialog'
+import { getReviewsByProductId, productReviews } from '../data/data'
+import { ProductReviewsDrawer } from './product-reviews-drawer'
 import { ProductsDetailsDrawer } from './products-mutate-drawer'
 import { useProducts } from './products-provider'
 
@@ -23,6 +25,16 @@ export function ProductsDialogs() {
             if (!isOpen) closeAndReset()
           }}
           product={currentRow}
+        />
+      )}
+
+      {currentRow && (
+        <ProductReviewsDrawer
+          open={open === 'reviews'}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) closeAndReset()
+          }}
+          reviews={getReviewsByProductId(currentRow.id, productReviews)}
         />
       )}
 

@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { Trash2, Eye, Pencil, Power } from 'lucide-react'
+import { Trash2, Eye, Power, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -52,12 +52,12 @@ export function DataTableRowActions<TData>({
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(product)
-            setOpen('edit')
+            setOpen('reviews')
           }}
         >
-          Editar produto
+          Ver avaliações
           <DropdownMenuShortcut>
-            <Pencil size={16} />
+            <MessageSquare size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
 
