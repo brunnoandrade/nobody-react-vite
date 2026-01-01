@@ -1,7 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import {
   BadgeCheck,
-  Bell,
   ChevronsUpDown,
   CreditCard,
   LogOut,
@@ -92,23 +91,16 @@ export function NavUser({ user }: NavUserProps) {
 
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
+                  <Link to='/settings'>
+                    <CreditCard />
+                    Geral
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem asChild>
                   <Link to='/settings/account'>
                     <BadgeCheck />
                     Conta
-                  </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem asChild>
-                  <Link to='/settings'>
-                    <CreditCard />
-                    Cobrança
-                  </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem asChild>
-                  <Link to='/settings/notifications'>
-                    <Bell />
-                    Notificações
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
