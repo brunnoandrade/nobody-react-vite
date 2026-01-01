@@ -25,7 +25,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { products } from '../data/data'
+import { products } from '../data/products'
 import { type Product } from '../data/schema'
 import { DataTableBulkActions } from './data-table-bulk-actions'
 import { productsColumns as columns } from './products-columns'
@@ -106,8 +106,8 @@ export function ProductsTable({ data }: ProductsTableProps) {
             columnId: 'name',
             title: 'Produto',
             options: products.map((p) => ({
-              label: p.label,
-              value: p.label,
+              label: p.name,
+              value: p.id,
             })),
           },
           {
