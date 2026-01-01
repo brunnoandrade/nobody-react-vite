@@ -44,27 +44,44 @@ export function Dashboard() {
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Total de avaliações
+                    Total de reviews
                   </CardTitle>
-                  <span className='text-muted-foreground'>⭐</span>
+                  <span className='text-muted-foreground'>📝</span>
                 </CardHeader>
                 <CardContent>
                   <div className='text-2xl font-bold'>1.284</div>
                   <p className='text-xs text-muted-foreground'>
-                    +12% em relação ao mês passado
+                    Reviews recebidos no período
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+                  <CardTitle className='text-sm font-medium'>CSAT</CardTitle>
+                  <span className='text-muted-foreground'>⭐</span>
+                </CardHeader>
+                <CardContent>
+                  <div className='text-2xl font-bold'>82%</div>
+                  <p className='text-xs text-muted-foreground'>
+                    Satisfação média dos clientes
                   </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Avaliações aprovadas
+                    Sentimento médio
                   </CardTitle>
-                  <span className='text-muted-foreground'>✔️</span>
+                  <span className='text-muted-foreground'>😊</span>
                 </CardHeader>
                 <CardContent>
-                  <div className='text-2xl font-bold'>1.032</div>
-                  <p className='text-xs text-muted-foreground'>80% do total</p>
+                  <div className='flex items-center gap-2'>
+                    <span className='text-2xl'>😊</span>
+                    <span className='text-2xl font-bold'>+64%</span>
+                  </div>
+                  <p className='text-xs text-muted-foreground'>
+                    Predominância positiva
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -77,23 +94,12 @@ export function Dashboard() {
                 <CardContent>
                   <div className='text-2xl font-bold'>176</div>
                   <p className='text-xs text-muted-foreground'>
-                    Aguardando ação
+                    Aguardando aprovação
                   </p>
                 </CardContent>
               </Card>
-              <Card>
-                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>
-                    Avaliações rejeitadas
-                  </CardTitle>
-                  <span className='text-muted-foreground'>❌</span>
-                </CardHeader>
-                <CardContent>
-                  <div className='text-2xl font-bold'>76</div>
-                  <p className='text-xs text-muted-foreground'>6% do total</p>
-                </CardContent>
-              </Card>
             </div>
+
             <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
               <Card className='col-span-1 lg:col-span-4'>
                 <CardHeader>
