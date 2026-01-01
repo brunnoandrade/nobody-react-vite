@@ -6,6 +6,7 @@ import {
   Command,
   GalleryVerticalEnd,
   Star,
+  Package,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -45,6 +46,11 @@ export const sidebarData: SidebarData = {
           title: 'Avaliações',
           url: '/reviews',
           icon: Star,
+        },
+        {
+          title: 'Produtos',
+          url: '/products',
+          icon: Package,
         },
       ],
     },
