@@ -20,15 +20,15 @@ export const sidebarData: SidebarData = {
     {
       name: 'Nobody Admin',
       logo: Command,
-      plan: 'Vite + ShadcnUI',
+      plan: 'Free',
     },
     {
-      name: 'Acme Inc',
+      name: 'Nome de Org',
       logo: GalleryVerticalEnd,
       plan: 'Enterprise',
     },
     {
-      name: 'Acme Corp.',
+      name: 'Org LTDA',
       logo: AudioWaveform,
       plan: 'Startup',
     },
