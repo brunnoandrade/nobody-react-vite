@@ -55,7 +55,7 @@ export function TeamSwitcher({ teams }: TeamSwitcherProps) {
             sideOffset={4}
           >
             <DropdownMenuLabel className='text-xs text-muted-foreground'>
-              Organizações
+              Lojas
             </DropdownMenuLabel>
             {teams.map((team) => (
               <DropdownMenuItem
@@ -75,7 +75,7 @@ export function TeamSwitcher({ teams }: TeamSwitcherProps) {
                 <Plus className='size-4' />
               </div>
               <div className='font-medium text-muted-foreground'>
-                Adicionar organização
+                Adicionar loja
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
