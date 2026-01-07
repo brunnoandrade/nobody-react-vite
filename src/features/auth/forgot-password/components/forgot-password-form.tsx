@@ -19,7 +19,7 @@ import { Input } from '@/components/ui/input'
 
 const formSchema = z.object({
   email: z.email({
-    error: (iss) => (iss.input === '' ? 'Please enter your email' : undefined),
+    error: (iss) => (iss.input === '' ? 'Informe seu e-mail' : undefined),
   }),
 })
 
@@ -41,14 +41,14 @@ export function ForgotPasswordForm({
     console.log(data)
 
     toast.promise(sleep(2000), {
-      loading: 'Sending email...',
+      loading: 'Enviando e-mail...',
       success: () => {
         setIsLoading(false)
         form.reset()
         navigate({ to: '/otp' })
-        return `Email sent to ${data.email}`
+        return `E-mail enviado para ${data.email}`
       },
-      error: 'Error',
+      error: 'Erro ao enviar o e-mail',
     })
   }
 
@@ -64,16 +64,16 @@ export function ForgotPasswordForm({
           name='email'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>E-mail</FormLabel>
               <FormControl>
-                <Input placeholder='name@example.com' {...field} />
+                <Input placeholder='nome@exemplo.com' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button className='mt-2' disabled={isLoading}>
-          Continue
+          Continuar
           {isLoading ? <Loader2 className='animate-spin' /> : <ArrowRight />}
         </Button>
       </form>
