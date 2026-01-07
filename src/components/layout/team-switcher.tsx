@@ -14,6 +14,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
+import { useStores } from '@/features/stores/components/stores-provider'
 
 type TeamSwitcherProps = {
   teams: {
@@ -26,6 +27,8 @@ type TeamSwitcherProps = {
 export function TeamSwitcher({ teams }: TeamSwitcherProps) {
   const { isMobile } = useSidebar()
   const [activeTeam, setActiveTeam] = React.useState(teams[0])
+
+  const { setOpen } = useStores()
 
   return (
     <SidebarMenu>
@@ -70,13 +73,16 @@ export function TeamSwitcher({ teams }: TeamSwitcherProps) {
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className='gap-2 p-2'>
+            <DropdownMenuItem
+              className='cursor-pointer gap-2 p-2'
+              onClick={() => setOpen('add')}
+            >
               <div className='flex size-6 items-center justify-center rounded-md border bg-background'>
                 <Plus className='size-4' />
               </div>
-              <div className='font-medium text-muted-foreground'>
+              <span className='font-medium text-muted-foreground'>
                 Adicionar loja
-              </div>
+              </span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
