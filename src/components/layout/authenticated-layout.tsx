@@ -6,6 +6,7 @@ import { SearchProvider } from '@/context/search-provider'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { SkipToMain } from '@/components/skip-to-main'
+import { FreeTrialFloatingModal } from '../free-trial-floating-modal'
 
 type AuthenticatedLayoutProps = {
   children?: React.ReactNode
@@ -19,6 +20,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
         <SidebarProvider defaultOpen={defaultOpen}>
           <SkipToMain />
           <AppSidebar />
+          <FreeTrialFloatingModal daysLeft={3} onSubscribe={() => null} />
           <SidebarInset
             className={cn(
               // Set content container, so we can use container queries
