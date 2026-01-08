@@ -23,7 +23,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { reviewProducts, reviewStatuses } from '../data/data'
+import { ratings, reviewProducts, reviewStatuses } from '../data/data'
 import { type Review } from '../data/schema'
 import { DataTableBulkActions } from './data-table-bulk-actions'
 import { reviewsColumns as columns } from './reviews-columns'
@@ -52,6 +52,7 @@ export function ReviewsTable({ data }: DataTableProps) {
     navigate: route.useNavigate(),
     pagination: { defaultPage: 1, defaultPageSize: 10 },
     columnFilters: [
+      { columnId: 'product', searchKey: 'product', type: 'array' },
       { columnId: 'comment', searchKey: 'comment', type: 'string' },
       { columnId: 'status', searchKey: 'status', type: 'array' },
       { columnId: 'rating', searchKey: 'rating', type: 'array' },
@@ -113,13 +114,7 @@ export function ReviewsTable({ data }: DataTableProps) {
           {
             columnId: 'rating',
             title: 'Nota',
-            options: [
-              { label: '1 estrela', value: '1' },
-              { label: '2 estrelas', value: '2' },
-              { label: '3 estrelas', value: '3' },
-              { label: '4 estrelas', value: '4' },
-              { label: '5 estrelas', value: '5' },
-            ],
+            options: ratings,
           },
         ]}
       />

@@ -112,8 +112,15 @@ export const reviewsColumns: ColumnDef<Review>[] = [
       return <Badge variant='outline'>⭐ {rating}</Badge>
     },
     filterFn: (row, id, value) => {
+      if (!value) return true
+
+      const values = Array.isArray(value)
+        ? value.map(String)
+        : String(value).split(',')
+
       const rating = String(row.getValue<number>(id))
-      return value.includes(rating)
+
+      return values.includes(rating)
     },
   },
   {

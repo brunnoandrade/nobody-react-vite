@@ -54,7 +54,7 @@ export function ProductsTable({ data }: ProductsTableProps) {
     navigate: route.useNavigate(),
     pagination: { defaultPage: 1, defaultPageSize: 10 },
     columnFilters: [
-      { columnId: 'name', searchKey: 'name', type: 'string' },
+      { columnId: 'name', searchKey: 'name', type: 'array' },
       { columnId: 'active', searchKey: 'active', type: 'array' },
     ],
   })
@@ -90,6 +90,11 @@ export function ProductsTable({ data }: ProductsTableProps) {
     ensurePageInRange(pageCount)
   }, [pageCount, ensurePageInRange])
 
+  const productOptions = products
+    .map((p) => p.name)
+    .filter((name, index, arr) => arr.indexOf(name) === index)
+    .map((name) => ({ label: name, value: name }))
+
   return (
     <div
       className={cn(
@@ -105,10 +110,7 @@ export function ProductsTable({ data }: ProductsTableProps) {
           {
             columnId: 'name',
             title: 'Produto',
-            options: products.map((p) => ({
-              label: p.name,
-              value: p.id,
-            })),
+            options: productOptions,
           },
           {
             columnId: 'active',

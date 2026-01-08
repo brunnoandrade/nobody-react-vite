@@ -43,6 +43,17 @@ export const productsColumns: ColumnDef<Product>[] = [
     cell: ({ row }) => (
       <span className='truncate font-medium'>{row.getValue('name')}</span>
     ),
+    filterFn: (row, id, value) => {
+      if (value == null || (Array.isArray(value) && value.length === 0)) {
+        return true
+      }
+
+      const values = Array.isArray(value)
+        ? value.map(String)
+        : String(value).split(',')
+
+      return values.includes(String(row.getValue(id)))
+    },
   },
 
   {
