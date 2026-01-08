@@ -114,7 +114,11 @@ export function ReviewsTable({ data }: DataTableProps) {
           {
             columnId: 'rating',
             title: 'Nota',
-            options: ratings,
+            options: ratings as unknown as {
+              label: string
+              value: string
+              icon?: React.ComponentType<{ className?: string }>
+            }[],
           },
         ]}
       />
