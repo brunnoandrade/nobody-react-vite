@@ -5,6 +5,7 @@ import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { ReviewsDialogs } from './components/reviews-dialogs'
+import { ReviewsPrimaryButtons } from './components/reviews-primary-buttons'
 import { ReviewsProvider } from './components/reviews-provider'
 import { ReviewsTable } from './components/reviews-table'
 import { reviews } from './data/reviews'
@@ -29,6 +30,7 @@ export function Reviews() {
               Visualize e gerencie todas as avaliações recebidas na sua loja
             </p>
           </div>
+          <ReviewsPrimaryButtons />
         </div>
 
         <ReviewsTable data={reviews} />

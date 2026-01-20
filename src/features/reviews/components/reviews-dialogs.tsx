@@ -3,6 +3,7 @@ import { showSubmittedData } from '@/lib/show-submitted-data'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/confirm-dialog'
+import { ReviewActionDialog } from './reviews-action-dialog'
 import { ReviewsDetailsDrawer } from './reviews-mutate-drawer'
 import { useReviews } from './reviews-provider'
 
@@ -192,6 +193,12 @@ export function ReviewsDialogs() {
           className='max-w-md'
         />
       )}
+
+      <ReviewActionDialog
+        key='store-add'
+        open={open === 'add'}
+        onOpenChange={() => setOpen('add')}
+      />
     </>
   )
 }
