@@ -8,6 +8,7 @@ export const reviewSchema = z.object({
   author: z.string(),
   showAuthor: z.boolean(),
   status: z.enum(['pending', 'approved', 'rejected']),
+  createdBy: z.enum(['admin', 'customer', 'import']).default('admin'),
   createdAt: z.date(),
 })
 
