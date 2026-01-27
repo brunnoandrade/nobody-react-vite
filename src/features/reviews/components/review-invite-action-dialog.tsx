@@ -201,7 +201,7 @@ export function ReviewInviteDialog({
 
         <DialogFooter>
           <Button type='submit' form='review-invite-form'>
-            Enviar convite
+            Enviar
           </Button>
         </DialogFooter>
       </DialogContent>
