@@ -235,7 +235,7 @@ export function ReviewActionDialog({
 
         <DialogFooter>
           <Button type='submit' form='review-form'>
-            Salvar review
+            Salvar
           </Button>
         </DialogFooter>
       </DialogContent>

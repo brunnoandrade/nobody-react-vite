@@ -13,6 +13,7 @@ type ReviewsDialogType =
   | 'visibility-author'
   | 'reply'
   | 'add'
+  | 'send-invite'
 
 type ReviewsContextType = {
   open: ReviewsDialogType | null

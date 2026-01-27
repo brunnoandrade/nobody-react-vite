@@ -3,6 +3,7 @@ import { showSubmittedData } from '@/lib/show-submitted-data'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/confirm-dialog'
+import { ReviewInviteDialog } from './review-invite-action-dialog'
 import { ReviewActionDialog } from './reviews-action-dialog'
 import { ReviewsDetailsDrawer } from './reviews-mutate-drawer'
 import { useReviews } from './reviews-provider'
@@ -195,9 +196,15 @@ export function ReviewsDialogs() {
       )}
 
       <ReviewActionDialog
-        key='store-add'
+        key='review-add'
         open={open === 'add'}
         onOpenChange={() => setOpen('add')}
+      />
+
+      <ReviewInviteDialog
+        key='review-send-invite'
+        open={open === 'send-invite'}
+        onOpenChange={() => setOpen('send-invite')}
       />
     </>
   )
