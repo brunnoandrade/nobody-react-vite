@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { ReviewInviteDialog } from './review-invite-action-dialog'
 import { ReviewActionDialog } from './reviews-action-dialog'
+import { ReviewsImportDialog } from './reviews-import-dialog'
 import { ReviewsDetailsDrawer } from './reviews-mutate-drawer'
 import { useReviews } from './reviews-provider'
 
@@ -194,6 +195,12 @@ export function ReviewsDialogs() {
           className='max-w-md'
         />
       )}
+
+      <ReviewsImportDialog
+        key='reviews-import'
+        open={open === 'import'}
+        onOpenChange={() => setOpen('import')}
+      />
 
       <ReviewActionDialog
         key='review-add'
