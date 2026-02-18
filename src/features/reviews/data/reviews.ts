@@ -1,17 +1,19 @@
 import { faker } from '@faker-js/faker'
+import { type Review } from './schema'
 
-// Fixed seed for consistent mock data
 faker.seed(2025)
 
-export const reviews = Array.from({ length: 100 }, () => {
-  const statuses = ['pending', 'approved', 'rejected'] as const
+export const reviews: Review[] = Array.from({ length: 100 }, () => {
+  const statuses: Review['status'][] = ['pending', 'approved', 'rejected']
+
+  const createdBys: Review['createdBy'][] = ['admin', 'customer', 'import']
 
   const products = [
     'Tênis Runner Pro',
     'Camiseta Dry Fit',
     'Jaqueta Impermeável',
     'Mochila Explorer',
-  ] as const
+  ]
 
   return {
     id: faker.string.uuid(),
@@ -21,6 +23,7 @@ export const reviews = Array.from({ length: 100 }, () => {
     author: faker.person.fullName(),
     showAuthor: faker.datatype.boolean(),
     status: faker.helpers.arrayElement(statuses),
+    createdBy: faker.helpers.arrayElement(createdBys),
     createdAt: faker.date.recent({ days: 30 }),
   }
 })
