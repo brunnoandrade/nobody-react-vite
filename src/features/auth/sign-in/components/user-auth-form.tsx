@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Loader2, LogIn } from 'lucide-react'
+import { FcGoogle } from 'react-icons/fc'
 import { toast } from 'sonner'
 import { type AuthUser, useAuthStore } from '@/stores/auth-store'
 import { parseJwt } from '@/lib/jwt'
@@ -121,6 +122,28 @@ export function UserAuthForm({
             <LogIn />
           )}
           Entrar
+        </Button>
+
+        <div className='relative my-2'>
+          <div className='absolute inset-0 flex items-center'>
+            <span className='w-full border-t' />
+          </div>
+          <div className='relative flex justify-center text-xs uppercase'>
+            <span className='bg-background px-2 text-muted-foreground'>
+              Ou continue com
+            </span>
+          </div>
+        </div>
+
+        <Button
+          variant='outline'
+          type='button'
+          onClick={() => {
+            window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`
+          }}
+        >
+          <FcGoogle className='h-4 w-4' />
+          Google
         </Button>
       </form>
     </Form>
