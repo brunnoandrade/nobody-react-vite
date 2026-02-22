@@ -3,14 +3,15 @@ import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
 
 const ACCESS_TOKEN = 'auth-access-token'
 const REFRESH_TOKEN = 'auth-refresh-token'
-const AUTH_USER = 'auth-user'
 
 export interface AuthUser {
-  sub: string
+  id: number
   email: string
-  role: string[]
-  exp: number
-  iat: number
+  name: string
+  documentId?: string | null
+  phone?: string | null
+  state?: string | null
+  language?: string | null
 }
 
 interface AuthState {
@@ -28,26 +29,17 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()((set) => {
   const accessTokenCookie = getCookie(ACCESS_TOKEN)
   const refreshTokenCookie = getCookie(REFRESH_TOKEN)
-  const userCookie = getCookie(AUTH_USER)
 
   return {
     auth: {
-      user: userCookie ? JSON.parse(userCookie) : null,
+      user: null,
       accessToken: accessTokenCookie ? JSON.parse(accessTokenCookie) : '',
       refreshToken: refreshTokenCookie ? JSON.parse(refreshTokenCookie) : '',
 
       setUser: (user) =>
-        set((state) => {
-          if (user) {
-            setCookie(AUTH_USER, JSON.stringify(user))
-          } else {
-            removeCookie(AUTH_USER)
-          }
-
-          return {
-            auth: { ...state.auth, user },
-          }
-        }),
+        set((state) => ({
+          auth: { ...state.auth, user },
+        })),
 
       setAccessToken: (token) =>
         set((state) => {
@@ -65,7 +57,6 @@ export const useAuthStore = create<AuthState>()((set) => {
         set((state) => {
           removeCookie(ACCESS_TOKEN)
           removeCookie(REFRESH_TOKEN)
-          removeCookie(AUTH_USER)
 
           return {
             auth: {
