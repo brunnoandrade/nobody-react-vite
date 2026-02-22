@@ -1,6 +1,12 @@
 import type { AxiosError } from 'axios'
 import { useMutation } from '@tanstack/react-query'
-import { signIn, type SignInDTO, type SignInResponse } from './auth.service'
+import { signIn, signUp } from './auth.service'
+import {
+  type SignInDTO,
+  type SignInResponse,
+  type SignUpDTO,
+  type SignUpResponse,
+} from './auth.types'
 
 export function useSignIn() {
   return useMutation<
@@ -9,5 +15,15 @@ export function useSignIn() {
     SignInDTO
   >({
     mutationFn: signIn,
+  })
+}
+
+export function useSignUp() {
+  return useMutation<
+    SignUpResponse,
+    AxiosError<{ message?: string }>,
+    SignUpDTO
+  >({
+    mutationFn: signUp,
   })
 }

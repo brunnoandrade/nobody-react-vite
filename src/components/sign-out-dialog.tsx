@@ -14,7 +14,6 @@ export function SignOutDialog({ open, onOpenChange }: SignOutDialogProps) {
 
   const handleSignOut = () => {
     auth.reset()
-    // Preserva a rota atual para redirecionar após o login
     const currentPath = location.href
     navigate({
       to: '/sign-in',

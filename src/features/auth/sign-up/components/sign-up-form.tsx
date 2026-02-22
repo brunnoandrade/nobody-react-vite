@@ -1,8 +1,11 @@
-import { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigate } from '@tanstack/react-router'
 import { FcGoogle } from 'react-icons/fc'
+import { toast } from 'sonner'
+import { type AuthUser, useAuthStore } from '@/stores/auth-store'
+import { parseJwt } from '@/lib/jwt'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,6 +18,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
+import { useSignUp } from '../../auth.mutation'
 
 const formSchema = z
   .object({
@@ -36,7 +40,11 @@ export function SignUpForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLFormElement>) {
-  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
+
+  const { auth } = useAuthStore()
+
+  const signUpMutation = useSignUp()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,15 +56,30 @@ export function SignUpForm({
   })
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-    // eslint-disable-next-line no-console
-    console.log(data)
+    signUpMutation.mutate(
+      {
+        email: data.email,
+        password: data.password,
+        name: data.email.split('@')[0],
+        store_name: 'Minha Loja',
+      },
+      {
+        onSuccess: (response) => {
+          const { access_token, refresh_token } = response
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+          const decodedUser = parseJwt<AuthUser>(access_token)
+
+          auth.setUser(decodedUser)
+          auth.setAccessToken(access_token)
+          auth.setRefreshToken(refresh_token)
+
+          toast.success('Conta criada com sucesso!')
+
+          navigate({ to: '/', replace: true })
+        },
+      }
+    )
   }
-
   return (
     <Form {...form}>
       <form
@@ -106,7 +129,7 @@ export function SignUpForm({
           )}
         />
 
-        <Button className='mt-2' disabled={isLoading}>
+        <Button className='mt-2' disabled={signUpMutation.isPending}>
           Criar conta
         </Button>
 

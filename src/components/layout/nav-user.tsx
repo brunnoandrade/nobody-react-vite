@@ -6,6 +6,7 @@ import {
   LogOut,
   Sparkles,
 } from 'lucide-react'
+import { useAuthStore } from '@/stores/auth-store'
 import useDialogState from '@/hooks/use-dialog-state'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -25,17 +26,15 @@ import {
 } from '@/components/ui/sidebar'
 import { SignOutDialog } from '@/components/sign-out-dialog'
 
-type NavUserProps = {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}
-
-export function NavUser({ user }: NavUserProps) {
+export function NavUser() {
   const { isMobile } = useSidebar()
   const [open, setOpen] = useDialogState()
+
+  const user = useAuthStore((state) => state.auth.user)
+
+  const name = user?.email?.split('@')[0] ?? 'Usuário'
+  const email = user?.email ?? ''
+  const initials = name?.[0]?.toUpperCase() ?? 'U'
 
   return (
     <>
@@ -48,13 +47,17 @@ export function NavUser({ user }: NavUserProps) {
                 className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
               >
                 <Avatar className='h-8 w-8 rounded-lg'>
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className='rounded-lg'>SN</AvatarFallback>
+                  <AvatarImage alt={name} />
+                  <AvatarFallback className='rounded-lg'>
+                    {initials}
+                  </AvatarFallback>
                 </Avatar>
+
                 <div className='grid flex-1 text-start text-sm leading-tight'>
-                  <span className='truncate font-semibold'>{user.name}</span>
-                  <span className='truncate text-xs'>{user.email}</span>
+                  <span className='truncate font-semibold'>{name}</span>
+                  <span className='truncate text-xs'>{email}</span>
                 </div>
+
                 <ChevronsUpDown className='ms-auto size-4' />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
@@ -68,12 +71,15 @@ export function NavUser({ user }: NavUserProps) {
               <DropdownMenuLabel className='p-0 font-normal'>
                 <div className='flex items-center gap-2 px-1 py-1.5 text-start text-sm'>
                   <Avatar className='h-8 w-8 rounded-lg'>
-                    <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback className='rounded-lg'>SN</AvatarFallback>
+                    <AvatarImage alt={name} />
+                    <AvatarFallback className='rounded-lg'>
+                      {initials}
+                    </AvatarFallback>
                   </Avatar>
+
                   <div className='grid flex-1 text-start text-sm leading-tight'>
-                    <span className='truncate font-semibold'>{user.name}</span>
-                    <span className='truncate text-xs'>{user.email}</span>
+                    <span className='truncate font-semibold'>{name}</span>
+                    <span className='truncate text-xs'>{email}</span>
                   </div>
                 </div>
               </DropdownMenuLabel>
