@@ -18,7 +18,7 @@ export const sidebarData: SidebarData = {
   },
   teams: [
     {
-      name: 'Nobody Admin',
+      name: 'Minsit Admin',
       logo: Command,
       plan: 'Free',
     },
