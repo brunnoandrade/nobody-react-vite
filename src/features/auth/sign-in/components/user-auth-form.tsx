@@ -1,12 +1,12 @@
-import { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Loader2, LogIn } from 'lucide-react'
 import { toast } from 'sonner'
-import { useAuthStore } from '@/stores/auth-store'
-import { sleep, cn } from '@/lib/utils'
+import { type AuthUser, useAuthStore } from '@/stores/auth-store'
+import { parseJwt } from '@/lib/jwt'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -18,11 +18,10 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
+import { useSignIn } from '@/features/auth/auth.mutation'
 
 const formSchema = z.object({
-  email: z.email({
-    error: (iss) => (iss.input === '' ? 'Informe seu e-mail' : undefined),
-  }),
+  email: z.string().min(1, 'Informe seu e-mail').email('E-mail inválido'),
   password: z
     .string()
     .min(1, 'Informe sua senha')
@@ -38,9 +37,11 @@ export function UserAuthForm({
   redirectTo,
   ...props
 }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+
   const { auth } = useAuthStore()
+
+  const signInMutation = useSignIn()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,32 +52,23 @@ export function UserAuthForm({
   })
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true)
+    signInMutation.mutate(data, {
+      onSuccess: (response) => {
+        const { access_token, refresh_token } = response
 
-    toast.promise(sleep(2000), {
-      loading: 'Entrando...',
-      success: () => {
-        setIsLoading(false)
+        const decodedUser = parseJwt<AuthUser>(access_token)
 
-        // Mock de autenticação bem-sucedida
-        const mockUser = {
-          accountNo: 'ACC001',
-          email: data.email,
-          role: ['user'],
-          exp: Date.now() + 24 * 60 * 60 * 1000, // 24 horas a partir de agora
-        }
+        auth.setUser(decodedUser)
+        auth.setAccessToken(access_token)
+        auth.setRefreshToken(refresh_token)
 
-        // Define usuário e token de acesso
-        auth.setUser(mockUser)
-        auth.setAccessToken('mock-access-token')
+        toast.success(`Bem-vindo, ${decodedUser.email}`)
 
-        // Redireciona para a rota armazenada ou dashboard
-        const targetPath = redirectTo || '/'
-        navigate({ to: targetPath, replace: true })
-
-        return `Bem-vindo de volta, ${data.email}!`
+        navigate({
+          to: redirectTo || '/',
+          replace: true,
+        })
       },
-      error: 'Erro ao entrar',
     })
   }
 
@@ -94,7 +86,7 @@ export function UserAuthForm({
             <FormItem>
               <FormLabel>E-mail</FormLabel>
               <FormControl>
-                <Input placeholder='nome@exemplo.com' {...field} />
+                <Input type='email' placeholder='nome@exemplo.com' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -111,6 +103,7 @@ export function UserAuthForm({
                 <PasswordInput placeholder='********' {...field} />
               </FormControl>
               <FormMessage />
+
               <Link
                 to='/forgot-password'
                 className='absolute end-0 -top-0.5 text-sm font-medium text-muted-foreground hover:opacity-75'
@@ -121,8 +114,12 @@ export function UserAuthForm({
           )}
         />
 
-        <Button className='mt-2' disabled={isLoading}>
-          {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
+        <Button className='mt-2' disabled={signInMutation.isPending}>
+          {signInMutation.isPending ? (
+            <Loader2 className='animate-spin' />
+          ) : (
+            <LogIn />
+          )}
           Entrar
         </Button>
       </form>
