@@ -30,7 +30,6 @@ export function AuthProvider({ children }: Props) {
       <div className='flex h-screen flex-col items-center justify-center bg-background'>
         <div className='flex flex-col items-center gap-6'>
           <div className='text-2xl font-bold tracking-tight'>Minsit</div>
-
           <div className='flex items-center gap-3'>
             <Loader2 className='h-6 w-6 animate-spin text-primary' />
           </div>

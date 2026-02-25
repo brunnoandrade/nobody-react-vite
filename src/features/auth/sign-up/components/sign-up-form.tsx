@@ -56,12 +56,14 @@ export function SignUpForm({
   })
 
   function onSubmit(data: z.infer<typeof formSchema>) {
+    const baseName = data.email.split('@')[0]
+
     signUpMutation.mutate(
       {
         email: data.email,
         password: data.password,
-        name: data.email.split('@')[0],
-        store_name: 'Minha Loja',
+        name: baseName,
+        store_name: `Loja de ${baseName}`,
       },
       {
         onSuccess: (response) => {
