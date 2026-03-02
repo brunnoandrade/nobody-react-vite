@@ -1,18 +1,11 @@
+import { useEffect } from 'react'
 import { z } from 'zod'
+import { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
-import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { showSubmittedData } from '@/lib/show-submitted-data'
-import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
+import { useAuthStore } from '@/stores/auth-store'
 import { Button } from '@/components/ui/button'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
 import {
   Form,
   FormControl,
@@ -23,24 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { DatePicker } from '@/components/date-picker'
-
-const languages = [
-  { label: 'Inglês', value: 'en' },
-  { label: 'Francês', value: 'fr' },
-  { label: 'Alemão', value: 'de' },
-  { label: 'Espanhol', value: 'es' },
-  { label: 'Português', value: 'pt' },
-  { label: 'Russo', value: 'ru' },
-  { label: 'Japonês', value: 'ja' },
-  { label: 'Coreano', value: 'ko' },
-  { label: 'Chinês', value: 'zh' },
-] as const
+import { useUpdateUser } from '../users/users.mutation'
 
 const accountFormSchema = z.object({
   name: z
@@ -48,24 +24,44 @@ const accountFormSchema = z.object({
     .min(1, 'Por favor, informe seu nome.')
     .min(2, 'O nome deve ter pelo menos 2 caracteres.')
     .max(30, 'O nome não pode ter mais de 30 caracteres.'),
-  dob: z.date('Por favor, selecione sua data de nascimento.'),
-  language: z.string('Por favor, selecione um idioma.'),
 })
 
 type AccountFormValues = z.infer<typeof accountFormSchema>
 
-const defaultValues: Partial<AccountFormValues> = {
-  name: '',
-}
-
 export function AccountForm() {
+  const user = useAuthStore((state) => state.auth.user)
+
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
-    defaultValues,
+    defaultValues: {
+      name: user?.name ?? '',
+    },
   })
 
-  function onSubmit(data: AccountFormValues) {
-    showSubmittedData(data)
+  const { mutateAsync, isPending } = useUpdateUser(user?.id ?? 0)
+
+  useEffect(() => {
+    if (user) {
+      form.reset({ name: user.name })
+    }
+  }, [user])
+
+  async function onSubmit(data: AccountFormValues) {
+    try {
+      await mutateAsync(data)
+
+      toast.success('Conta atualizada com sucesso.')
+      form.reset(data)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const message =
+          error.response?.data?.message ?? 'Erro ao atualizar conta.'
+
+        toast.error(message)
+      } else {
+        toast.error('Erro inesperado.')
+      }
+    }
   }
 
   return (
@@ -77,99 +73,23 @@ export function AccountForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nome</FormLabel>
+
               <FormControl>
                 <Input placeholder='Seu nome' {...field} />
               </FormControl>
+
               <FormDescription>
                 Este é o nome que será exibido no seu perfil e nos e-mails.
               </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name='dob'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Data de nascimento</FormLabel>
-              <DatePicker selected={field.value} onSelect={field.onChange} />
-              <FormDescription>
-                Sua data de nascimento é usada para calcular sua idade.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name='language'
-          render={({ field }) => (
-            <FormItem className='flex flex-col'>
-              <FormLabel>Idioma</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant='outline'
-                      role='combobox'
-                      className={cn(
-                        'w-[200px] justify-between',
-                        !field.value && 'text-muted-foreground'
-                      )}
-                    >
-                      {field.value
-                        ? languages.find(
-                            (language) => language.value === field.value
-                          )?.label
-                        : 'Selecionar idioma'}
-                      <CaretSortIcon className='ms-2 h-4 w-4 shrink-0 opacity-50' />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-
-                <PopoverContent className='w-[200px] p-0'>
-                  <Command>
-                    <CommandInput placeholder='Buscar idioma...' />
-                    <CommandEmpty>Nenhum idioma encontrado.</CommandEmpty>
-                    <CommandGroup>
-                      <CommandList>
-                        {languages.map((language) => (
-                          <CommandItem
-                            value={language.label}
-                            key={language.value}
-                            onSelect={() => {
-                              form.setValue('language', language.value)
-                            }}
-                          >
-                            <CheckIcon
-                              className={cn(
-                                'size-4',
-                                language.value === field.value
-                                  ? 'opacity-100'
-                                  : 'opacity-0'
-                              )}
-                            />
-                            {language.label}
-                          </CommandItem>
-                        ))}
-                      </CommandList>
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-
-              <FormDescription>
-                Este idioma será usado no painel da aplicação.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button type='submit'>Atualizar conta</Button>
+        <Button type='submit' disabled={isPending}>
+          {isPending ? 'Atualizando...' : 'Atualizar conta'}
+        </Button>
       </form>
     </Form>
   )

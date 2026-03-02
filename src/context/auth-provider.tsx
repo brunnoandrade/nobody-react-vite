@@ -21,14 +21,14 @@ export function AuthProvider({ children }: Props) {
   const { currentStore, setStore } = useCurrentStore()
 
   useEffect(() => {
-    if (data && !user) {
+    if (data) {
       setUser(data)
     }
 
     if (isError && user) {
       reset()
     }
-  }, [data, isError])
+  }, [data, isError, reset, setUser, user])
 
   useEffect(() => {
     if (stores && stores.length > 0 && !currentStore) {

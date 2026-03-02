@@ -37,10 +37,19 @@ type GetUsersParams = {
   limit?: number
 }
 
+export type UpdateUserDto = {
+  name: string
+}
+
 export async function getUsers(params?: GetUsersParams) {
   const { data } = await api.get<GetUsersResponse>('/users', {
     params,
   })
 
   return data
+}
+
+export async function updateUser(userId: number, data: UpdateUserDto) {
+  const response = await api.patch(`/users/${userId}`, data)
+  return response.data
 }
