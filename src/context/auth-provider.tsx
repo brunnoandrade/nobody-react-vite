@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 import { Loader2 } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
+import { useCurrentStore } from '@/stores/use-current-store'
 import { useMe } from '@/features/auth/auth.query'
+import { useGetStores } from '@/features/stores/stores.query'
 
 type Props = {
   children: React.ReactNode
@@ -15,6 +17,9 @@ export function AuthProvider({ children }: Props) {
 
   const { data, isLoading, isError } = useMe(!!accessToken)
 
+  const { data: stores, isLoading: storesLoading } = useGetStores()
+  const { currentStore, setStore } = useCurrentStore()
+
   useEffect(() => {
     if (data && !user) {
       setUser(data)
@@ -25,14 +30,18 @@ export function AuthProvider({ children }: Props) {
     }
   }, [data, isError])
 
-  if (accessToken && isLoading) {
+  useEffect(() => {
+    if (stores && stores.length > 0 && !currentStore) {
+      setStore(stores[0].id)
+    }
+  }, [stores, currentStore])
+
+  if (accessToken && (isLoading || storesLoading)) {
     return (
       <div className='flex h-screen flex-col items-center justify-center bg-background'>
         <div className='flex flex-col items-center gap-6'>
           <div className='text-2xl font-bold tracking-tight'>Minsit</div>
-          <div className='flex items-center gap-3'>
-            <Loader2 className='h-6 w-6 animate-spin text-primary' />
-          </div>
+          <Loader2 className='h-6 w-6 animate-spin text-primary' />
         </div>
       </div>
     )

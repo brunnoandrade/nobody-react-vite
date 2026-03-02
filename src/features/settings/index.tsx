@@ -1,5 +1,5 @@
 import { Outlet } from '@tanstack/react-router'
-import { Wrench, Sliders } from 'lucide-react'
+import { Wrench, Sliders, Users } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
@@ -19,6 +19,11 @@ const sidebarNavItems = [
     title: 'Conta',
     href: '/settings/account',
     icon: <Wrench size={18} />,
+  },
+  {
+    title: 'Usuários',
+    href: '/settings/users',
+    icon: <Users size={18} />,
   },
 ]
 

@@ -20,7 +20,7 @@ export function AppSidebar() {
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>
         <StoresProvider>
-          <TeamSwitcher teams={sidebarData.teams} />
+          <TeamSwitcher />
           <StoresDialogs />
         </StoresProvider>
 
