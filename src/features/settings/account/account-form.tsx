@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import { Button } from '@/components/ui/button'
@@ -87,8 +88,8 @@ export function AccountForm() {
           )}
         />
 
-        <Button type='submit' disabled={isPending}>
-          {isPending ? 'Atualizando...' : 'Atualizar conta'}
+        <Button type='submit' disabled={isPending} className='min-w-[100px]'>
+          {isPending ? <Loader2 className='h-4 w-4 animate-spin' /> : 'Salvar'}
         </Button>
       </form>
     </Form>

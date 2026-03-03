@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ContentSection } from '../components/content-section'
+import { InviteUserDialog } from './invite/invite-user-dialog'
 import { UsersList } from './users-list'
 import { useGetUsers } from './users.query'
 
@@ -13,6 +14,7 @@ export function UsersAccount() {
     <ContentSection
       title='Usuários da loja'
       desc='Gerencie os usuários vinculados a esta loja. Defina permissões, edite informações e controle os níveis de acesso.'
+      actions={<InviteUserDialog />}
     >
       <UsersList
         response={
