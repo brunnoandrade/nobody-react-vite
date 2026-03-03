@@ -65,10 +65,24 @@ export function UserAuthForm({
 
         toast.success(`Bem-vindo, ${decodedUser.email}`)
 
-        navigate({
-          to: redirectTo || '/',
-          replace: true,
-        })
+        if (redirectTo) {
+          const [pathname, searchString] = redirectTo.split('?')
+
+          const search = searchString
+            ? Object.fromEntries(new URLSearchParams(searchString))
+            : undefined
+
+          navigate({
+            to: pathname,
+            search,
+            replace: true,
+          })
+        } else {
+          navigate({
+            to: '/',
+            replace: true,
+          })
+        }
       },
     })
   }

@@ -22,38 +22,56 @@ import { useSignUp } from '../../auth.mutation'
 
 const formSchema = z
   .object({
-    email: z.email({
-      error: (iss) => (iss.input === '' ? 'Informe seu e-mail' : undefined),
-    }),
-    password: z
-      .string()
-      .min(1, 'Informe sua senha')
-      .min(7, 'A senha deve ter no mínimo 7 caracteres'),
-    confirmPassword: z.string().min(1, 'Confirme sua senha'),
+    email: z.string().email('E-mail inválido'),
+    password: z.string().min(7, 'A senha deve ter no mínimo 7 caracteres'),
+    confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'As senhas não conferem.',
     path: ['confirmPassword'],
   })
 
+interface Props extends React.HTMLAttributes<HTMLFormElement> {
+  redirectTo?: string
+  defaultEmail?: string
+}
+
 export function SignUpForm({
   className,
+  redirectTo,
+  defaultEmail,
   ...props
-}: React.HTMLAttributes<HTMLFormElement>) {
+}: Props) {
   const navigate = useNavigate()
-
   const { auth } = useAuthStore()
-
   const signUpMutation = useSignUp()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      email: defaultEmail || '',
       password: '',
       confirmPassword: '',
     },
   })
+
+  function handleRedirect() {
+    if (redirectTo) {
+      const [pathname, searchString] = redirectTo.split('?')
+
+      const search = searchString
+        ? Object.fromEntries(new URLSearchParams(searchString))
+        : undefined
+
+      navigate({
+        to: pathname,
+        search,
+        replace: true,
+      })
+    } else {
+      navigate({ to: '/', replace: true })
+    }
+  }
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     const baseName = data.email.split('@')[0]
@@ -77,11 +95,12 @@ export function SignUpForm({
 
           toast.success('Conta criada com sucesso!')
 
-          navigate({ to: '/', replace: true })
+          handleRedirect()
         },
       }
     )
   }
+
   return (
     <Form {...form}>
       <form
@@ -96,7 +115,7 @@ export function SignUpForm({
             <FormItem>
               <FormLabel>E-mail</FormLabel>
               <FormControl>
-                <Input placeholder='nome@exemplo.com' {...field} />
+                <Input {...field} disabled={!!defaultEmail} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -110,7 +129,7 @@ export function SignUpForm({
             <FormItem>
               <FormLabel>Senha</FormLabel>
               <FormControl>
-                <PasswordInput placeholder='********' {...field} />
+                <PasswordInput {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -124,16 +143,14 @@ export function SignUpForm({
             <FormItem>
               <FormLabel>Confirmar senha</FormLabel>
               <FormControl>
-                <PasswordInput placeholder='********' {...field} />
+                <PasswordInput {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button className='mt-2' disabled={signUpMutation.isPending}>
-          Criar conta
-        </Button>
+        <Button disabled={signUpMutation.isPending}>Criar conta</Button>
 
         <div className='relative my-2'>
           <div className='absolute inset-0 flex items-center'>

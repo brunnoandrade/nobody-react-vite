@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { Route } from '@/routes/(auth)/sign-up'
 import {
   Card,
   CardContent,
@@ -11,6 +12,8 @@ import { AuthLayout } from '../auth-layout'
 import { SignUpForm } from './components/sign-up-form'
 
 export function SignUp() {
+  const { redirect, email } = Route.useSearch()
+
   return (
     <AuthLayout>
       <Card className='gap-4'>
@@ -23,6 +26,7 @@ export function SignUp() {
             Já possui uma conta?{' '}
             <Link
               to='/sign-in'
+              search={{ redirect }}
               className='underline underline-offset-4 hover:text-primary'
             >
               Entrar
@@ -30,7 +34,7 @@ export function SignUp() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SignUpForm />
+          <SignUpForm redirectTo={redirect} defaultEmail={email} />
         </CardContent>
         <CardFooter>
           <p className='px-8 text-center text-sm text-muted-foreground'>
