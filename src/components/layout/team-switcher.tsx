@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { ChevronsUpDown, Plus, Store } from 'lucide-react'
 import { useCurrentStore } from '@/stores/use-current-store'
@@ -20,20 +21,27 @@ import { useGetStores } from '@/features/stores/stores.query'
 
 export function TeamSwitcher() {
   const { isMobile } = useSidebar()
-
   const { setOpen } = useStores()
 
   const { currentStore, setStore } = useCurrentStore()
-
   const { data: stores, isLoading } = useGetStores()
 
   const queryClient = useQueryClient()
 
   const activeStore = stores?.find((s) => s.id === currentStore)
 
+  useEffect(() => {
+    if (!stores?.length) return
+
+    const exists = stores.some((s) => s.id === currentStore)
+
+    if (!exists) {
+      setStore(stores[0].id)
+    }
+  }, [stores, currentStore, setStore])
+
   function handleChange(id: number) {
     setStore(id)
-
     queryClient.invalidateQueries()
   }
 
