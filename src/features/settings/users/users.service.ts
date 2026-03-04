@@ -49,7 +49,17 @@ export async function getUsers(params?: GetUsersParams) {
   return data
 }
 
+export async function getUser(userId: number) {
+  const { data } = await api.get(`/users/${userId}`)
+  return data
+}
+
 export async function updateUser(userId: number, data: UpdateUserDto) {
   const response = await api.patch(`/users/${userId}`, data)
+  return response.data
+}
+
+export async function deleteUser(userId: number) {
+  const response = await api.delete(`/users/${userId}`)
   return response.data
 }
