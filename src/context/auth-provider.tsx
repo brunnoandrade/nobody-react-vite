@@ -3,7 +3,6 @@ import { Loader2 } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { useCurrentStore } from '@/stores/use-current-store'
 import { useMe } from '@/features/auth/auth.query'
-import { useGetStores } from '@/features/stores/stores.query'
 
 type Props = {
   children: React.ReactNode
@@ -17,12 +16,15 @@ export function AuthProvider({ children }: Props) {
 
   const { data, isLoading, isError } = useMe(!!accessToken)
 
-  const { data: stores, isLoading: storesLoading } = useGetStores()
   const { currentStore, setStore } = useCurrentStore()
 
   useEffect(() => {
     if (data) {
       setUser(data)
+
+      if (data.stores && data.stores.length > 0 && !currentStore) {
+        setStore(data.stores[0].id)
+      }
     }
 
     if (isError && user) {
@@ -30,13 +32,7 @@ export function AuthProvider({ children }: Props) {
     }
   }, [data, isError, reset, setUser, user])
 
-  useEffect(() => {
-    if (stores && stores.length > 0 && !currentStore) {
-      setStore(stores[0].id)
-    }
-  }, [stores, currentStore])
-
-  if (accessToken && (isLoading || storesLoading)) {
+  if (accessToken && isLoading) {
     return (
       <div className='flex h-screen flex-col items-center justify-center bg-background'>
         <div className='flex flex-col items-center gap-6'>

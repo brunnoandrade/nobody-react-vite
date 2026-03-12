@@ -1,41 +1,63 @@
-import { Outlet } from '@tanstack/react-router'
+import { Outlet, useNavigate, useRouterState } from '@tanstack/react-router'
 import { getCookie } from '@/lib/cookies'
 import { cn } from '@/lib/utils'
 import { LayoutProvider } from '@/context/layout-provider'
 import { SearchProvider } from '@/context/search-provider'
+import { useSubscription, useTrialDaysLeft } from '@/hooks/use-subscription'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { SkipToMain } from '@/components/skip-to-main'
+import { PlansPage } from '@/features/subscriptions/plans-page'
 import { FreeTrialFloatingModal } from '../free-trial-floating-modal'
 
 type AuthenticatedLayoutProps = {
   children?: React.ReactNode
 }
 
+const SUBSCRIPTION_BYPASS_PATHS = ['/plans']
+
 export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
   const defaultOpen = getCookie('sidebar_state') !== 'false'
+  const navigate = useNavigate()
+  const { location } = useRouterState()
+
+  const subscription = useSubscription()
+  const trialDaysLeft = useTrialDaysLeft()
+
+  const isBlocked =
+    !subscription ||
+    subscription.status === 'expired' ||
+    subscription.status === 'canceled'
+
+  const isBypassRoute = SUBSCRIPTION_BYPASS_PATHS.includes(location.pathname)
+
+  const showTrialModal =
+    !isBlocked && subscription?.status === 'trial' && !isBypassRoute
+
   return (
     <SearchProvider>
       <LayoutProvider>
         <SidebarProvider defaultOpen={defaultOpen}>
           <SkipToMain />
           <AppSidebar />
-          <FreeTrialFloatingModal daysLeft={3} onSubscribe={() => null} />
+          {showTrialModal && (
+            <FreeTrialFloatingModal
+              daysLeft={trialDaysLeft}
+              onSubscribe={() => navigate({ to: '/plans' })}
+            />
+          )}
           <SidebarInset
             className={cn(
-              // Set content container, so we can use container queries
               '@container/content',
-
-              // If layout is fixed, set the height
-              // to 100svh to prevent overflow
               'has-data-[layout=fixed]:h-svh',
-
-              // If layout is fixed and sidebar is inset,
-              // set the height to 100svh - spacing (total margins) to prevent overflow
               'peer-data-[variant=inset]:has-data-[layout=fixed]:h-[calc(100svh-(var(--spacing)*4))]'
             )}
           >
-            {children ?? <Outlet />}
+            {isBlocked && !isBypassRoute ? (
+              <PlansPage />
+            ) : (
+              (children ?? <Outlet />)
+            )}
           </SidebarInset>
         </SidebarProvider>
       </LayoutProvider>

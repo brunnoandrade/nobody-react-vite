@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
+import type { StoreInUser } from '@/features/auth/auth.types'
 
 const ACCESS_TOKEN = 'auth-access-token'
 const REFRESH_TOKEN = 'auth-refresh-token'
@@ -12,6 +13,7 @@ export interface AuthUser {
   phone?: string | null
   state?: string | null
   language?: string | null
+  stores?: StoreInUser[]
 }
 
 interface AuthState {
