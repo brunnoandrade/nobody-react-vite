@@ -1,13 +1,16 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import {
   BadgeCheck,
   ChevronsUpDown,
   CreditCard,
+  Crown,
   LogOut,
+  Settings,
   Sparkles,
 } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import useDialogState from '@/hooks/use-dialog-state'
+import { useSubscription, useTrialDaysLeft } from '@/hooks/use-subscription'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -26,15 +29,36 @@ import {
 } from '@/components/ui/sidebar'
 import { SignOutDialog } from '@/components/sign-out-dialog'
 
+const PLAN_LABELS: Record<string, string> = {
+  free_trial: 'Trial',
+  starter: 'Básico',
+  pro: 'Profissional',
+}
+
 export function NavUser() {
   const { isMobile } = useSidebar()
   const [open, setOpen] = useDialogState()
+  const navigate = useNavigate()
 
   const user = useAuthStore((state) => state.auth.user)
+  const subscription = useSubscription()
+  const trialDaysLeft = useTrialDaysLeft()
 
-  const name = user?.email?.split('@')[0] ?? 'Usuário'
+  const name = user?.name ?? user?.email?.split('@')[0] ?? 'Usuário'
   const email = user?.email ?? ''
   const initials = name?.[0]?.toUpperCase() ?? 'U'
+
+  const planLabel = subscription
+    ? (PLAN_LABELS[subscription.plan] ?? subscription.plan)
+    : null
+
+  const isTrial = subscription?.status === 'trial'
+  const isActive =
+    subscription?.status === 'active' || subscription?.status === 'past_due'
+  const isBlocked =
+    !subscription ||
+    subscription.status === 'expired' ||
+    subscription.status === 'canceled'
 
   return (
     <>
@@ -76,10 +100,11 @@ export function NavUser() {
                       {initials}
                     </AvatarFallback>
                   </Avatar>
-
                   <div className='grid flex-1 text-start text-sm leading-tight'>
                     <span className='truncate font-semibold'>{name}</span>
-                    <span className='truncate text-xs'>{email}</span>
+                    <span className='truncate text-xs text-muted-foreground'>
+                      {email}
+                    </span>
                   </div>
                 </div>
               </DropdownMenuLabel>
@@ -87,10 +112,51 @@ export function NavUser() {
               <DropdownMenuSeparator />
 
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Sparkles />
-                  Atualizar para Pro
-                </DropdownMenuItem>
+                {isTrial && (
+                  <DropdownMenuItem
+                    className='cursor-pointer text-orange-600 focus:text-orange-600'
+                    onClick={() => navigate({ to: '/plans' })}
+                  >
+                    <Crown className='text-orange-500' />
+                    <div className='flex flex-col'>
+                      <span className='text-xs font-semibold'>
+                        Fazer upgrade
+                      </span>
+                      <span className='text-[10px] text-orange-400'>
+                        {trialDaysLeft > 0
+                          ? `${trialDaysLeft} dias restantes no trial`
+                          : 'Trial expirando'}
+                      </span>
+                    </div>
+                  </DropdownMenuItem>
+                )}
+
+                {isBlocked && (
+                  <DropdownMenuItem
+                    className='cursor-pointer'
+                    onClick={() => navigate({ to: '/plans' })}
+                  >
+                    <Sparkles />
+                    Ver planos disponíveis
+                  </DropdownMenuItem>
+                )}
+
+                {isActive && (
+                  <DropdownMenuItem
+                    className='cursor-pointer'
+                    onClick={() => navigate({ to: '/settings/billing' })}
+                  >
+                    <Crown />
+                    <div className='flex flex-col'>
+                      <span className='text-xs font-semibold'>
+                        Plano {planLabel}
+                      </span>
+                      <span className='text-[10px] text-muted-foreground'>
+                        Gerenciar assinatura
+                      </span>
+                    </div>
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuGroup>
 
               <DropdownMenuSeparator />
@@ -98,8 +164,8 @@ export function NavUser() {
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
                   <Link to='/settings'>
-                    <CreditCard />
-                    Geral
+                    <Settings />
+                    Configurações
                   </Link>
                 </DropdownMenuItem>
 
@@ -107,6 +173,13 @@ export function NavUser() {
                   <Link to='/settings/account'>
                     <BadgeCheck />
                     Conta
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem asChild>
+                  <Link to='/settings/billing'>
+                    <CreditCard />
+                    Assinatura
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
