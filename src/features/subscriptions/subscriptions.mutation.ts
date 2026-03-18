@@ -22,6 +22,7 @@ export function useActivateTrial() {
     onSuccess: async () => {
       await refreshUser()
       toast.success('Trial ativado com sucesso!')
+      window.location.reload()
     },
   })
 }

@@ -31,6 +31,7 @@ import { Route as AuthenticatedReviewsIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
 import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authenticated/apps/index'
+import { Route as AuthenticatedSubscriptionSuccessRouteImport } from './routes/_authenticated/subscription/success'
 import { Route as AuthenticatedSettingsUsersRouteImport } from './routes/_authenticated/settings/users'
 import { Route as AuthenticatedSettingsBillingRouteImport } from './routes/_authenticated/settings/billing'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
@@ -150,6 +151,12 @@ const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexRouteImport.update({
   path: '/apps/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSubscriptionSuccessRoute =
+  AuthenticatedSubscriptionSuccessRouteImport.update({
+    id: '/subscription/success',
+    path: '/subscription/success',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsUsersRoute =
   AuthenticatedSettingsUsersRouteImport.update({
     id: '/users',
@@ -194,6 +201,7 @@ export interface FileRoutesByFullPath {
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/billing': typeof AuthenticatedSettingsBillingRoute
   '/settings/users': typeof AuthenticatedSettingsUsersRoute
+  '/subscription/success': typeof AuthenticatedSubscriptionSuccessRoute
   '/apps': typeof AuthenticatedAppsIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
@@ -220,6 +228,7 @@ export interface FileRoutesByTo {
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/billing': typeof AuthenticatedSettingsBillingRoute
   '/settings/users': typeof AuthenticatedSettingsUsersRoute
+  '/subscription/success': typeof AuthenticatedSubscriptionSuccessRoute
   '/apps': typeof AuthenticatedAppsIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
@@ -249,6 +258,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/billing': typeof AuthenticatedSettingsBillingRoute
   '/_authenticated/settings/users': typeof AuthenticatedSettingsUsersRoute
+  '/_authenticated/subscription/success': typeof AuthenticatedSubscriptionSuccessRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
@@ -278,6 +288,7 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/billing'
     | '/settings/users'
+    | '/subscription/success'
     | '/apps'
     | '/help-center'
     | '/products'
@@ -304,6 +315,7 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/billing'
     | '/settings/users'
+    | '/subscription/success'
     | '/apps'
     | '/help-center'
     | '/products'
@@ -332,6 +344,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/billing'
     | '/_authenticated/settings/users'
+    | '/_authenticated/subscription/success'
     | '/_authenticated/apps/'
     | '/_authenticated/help-center/'
     | '/_authenticated/products/'
@@ -512,6 +525,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/subscription/success': {
+      id: '/_authenticated/subscription/success'
+      path: '/subscription/success'
+      fullPath: '/subscription/success'
+      preLoaderRoute: typeof AuthenticatedSubscriptionSuccessRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/users': {
       id: '/_authenticated/settings/users'
       path: '/users'
@@ -568,6 +588,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPlansRoute: typeof AuthenticatedPlansRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
+  AuthenticatedSubscriptionSuccessRoute: typeof AuthenticatedSubscriptionSuccessRoute
   AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
@@ -581,6 +602,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPlansRoute: AuthenticatedPlansRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
+  AuthenticatedSubscriptionSuccessRoute: AuthenticatedSubscriptionSuccessRoute,
   AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
