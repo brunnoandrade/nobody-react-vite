@@ -9,7 +9,6 @@ import {
   getPortalUrl,
 } from './subscriptions.service'
 
-/** Refreshes /auth/me and syncs user into the auth store */
 async function refreshUser() {
   const data = await getMe()
   useAuthStore.getState().auth.setUser(data)
@@ -22,7 +21,7 @@ export function useActivateTrial() {
     onSuccess: async () => {
       await refreshUser()
       toast.success('Trial ativado com sucesso!')
-      window.location.reload()
+      window.location.href = '/'
     },
   })
 }
